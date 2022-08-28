@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}4kart.in{% endblock title %}
+{% block shop %}active{% endblock shop %}
+{% block body %}
+<div class="container bg-dange r my-5">
+    <div class="row">
+        <div class="col-md-4 bg-succes s">
+            <img src="{{pro.img.url}}" class="card-img-top" alt="...">
+        </div>
+        <div class="col-md-4 bg-warnin g mt-5">
+            <h1 class="text-danger">{{pro.product_name}}</h1>
+            <b>{{pro.des}}</b>
+            <h3><p class="text-danger">Off {{pro.price_off}}% <span class="text-dark">₹ {{pro.price}}</span></p></h3>
+            <h6 class="text-dark">Size name: <span class="text-dark">{{pro.size}}</span></h6>
+            <a href="wikipedia/{{pro.product_name}}">More about {{pro.product_name}}...</a>
+        </div>
+        <div class="col-md-4 bg-primar y mt-5">
+            <div class="car" style="width: 18rem;">
+                <div class="card-body mx-1">
+                <h5>Usually dispatched in 6 days.</h5>
+                    Sold by Appario Retail Private Ltd
+                    Fulfilled by 4kart.in
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </p>
+            </div>
+                <div class="card-body mx-1">
+                    <button type="button" class="btn btn-warning mx-1">BUY NOW</button>
+                    <button type="button" class="btn btn-warning">
+                        Add to cart
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
+                            <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"></path>
+                            <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                        </svg>
+                
+                      </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% comment %} 
+ {% endcomment %}
+{% endblock body %}

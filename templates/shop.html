@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}4kart.in{% endblock title %}
+{% block shop %}active{% endblock shop %}
+{% block body %}
+<div class="container-fluid ps-5 my-3">
+    <h3>Store</h3>
+    <div class="row">
+      {% for product in allpro %}
+      <div class="container-fluid m-1" style="width: 18rem;">
+        <img src="{{product.img.url}}" class="card-img-top w-100" alt="...">
+        <div class="card-body" align="center">
+          <h5 class="card-title">{{product.product_name}} <span class="text-danger">{{product.price_off}}% Off</span></h5>
+          <p class="card-text">{{product.des|truncatechars:25}}</p>
+          <a href="shop/{{product.product_id}}" class="btn btn-sm btn-danger">Grab Now !</a>
+        </div>
+      </div>
+      {% if forloopcount == 4 %}
+        hlo
+      {% endif %}
+      {% endfor %}
+    </div>
+    </div>
+    
+{% endblock body %}
