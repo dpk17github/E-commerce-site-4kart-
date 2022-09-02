@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}4kart.in{% endblock title %}
 {% block shop %}active{% endblock shop %}
+{% block count %}{{u.cart_count}}{% endblock count %}
 {% block body %}
 <div class="container bg-dange r my-5">
     <div class="row">
@@ -13,6 +15,16 @@
             <h3><p class="text-danger">Off {{pro.price_off}}% <span class="text-dark">₹ {{pro.price}}</span></p></h3>
             <h6 class="text-dark">Size name: <span class="text-dark">{{pro.size}}</span></h6>
             <a href="wikipedia/{{pro.product_name}}">More about {{pro.product_name}}...</a>
+            <div class="alert alert-success mt-3" role="alert">
+                Delivery in 3 days
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
+                    <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                  </svg><br>
+                Cash on delivery available 
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                  </svg>
+              </div>
         </div>
         <div class="col-md-4 bg-primar y mt-5">
             <div class="car" style="width: 18rem;">
@@ -21,12 +33,18 @@
                     Sold by Appario Retail Private Ltd
                     Fulfilled by 4kart.in
                     <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
+                    <div class="card my-2" style="width: 18rem;">
+                        <div class="card-body">
+                          <h5 class="card-title">Your Address</h5>
+                          {% if user.is_authenticated %}
+                          <h6 class="card-subtitle mb-2 text-danger">{{u.user.first_name}} {{u.user.last_name}}</h6>
+                          <p class="card-text">{{u.address.upper}}<br> {{u.city.upper}} ({{u.state.upper}}) <br> {{u.zip}}</p>
+                          <a href="/profile" class="card-link">Change/Add Address</a>
+                          {% else %}
+                          <a href="/loginpage" class="card-link">Add Address</a>
+                          {% endif %}
+                        </div>
+                      </div>
                 </p>
             </div>
                 <div class="card-body mx-1">
@@ -43,8 +61,50 @@
             </div>
         </div>
     </div>
-
 </div>
-{% comment %} 
- {% endcomment %}
+
+<div class="container bg-dange r my-3">
+    <img src="{% static "img/paytm.jpg" %}" class="w-100" height="100">
+</div>
+
+<div class="container">
+    <h3 class="text-secondary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+        </svg> reviews
+    </h3>   
+    {% for review in reviews  %}
+    <div class="row m-4">
+        <div class="col-md-1">
+            <img src="{% static "img/userlogo1.jpg" %}" class="w-100 px-1">
+        </div>
+        <div class="col-md-6 bg-warnin g">
+            <b>{{review.user}}</b> {{review.timestamp}}<br>
+            {{review.review}}
+        </div>
+    </div>
+    {% endfor %}
+    <form action="/shop/review" method="post">
+        {% csrf_token %}
+        <div class="row mx-4">
+            <div class="col-md-6 bg-dange">
+                <div class="">
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" placeholder="Write your experience here about this product and help others..." name="review" required></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row mx-4">
+            <div class="col-md-6 bg-dange">
+                {% if user.is_authenticated %}
+                <button type="submit" class="btn btn-outline-danger btn-sm mt-2">Post your experience</button>
+                {% else %}
+                <a href="/loginpage" class="btn btn-outline-danger btn-sm mt-2">Log in for Post your experience</a>
+                {% endif %}
+                <input type="hidden" name="proid" value="{{pro.product_id}}">
+            </div>
+        </div>
+    </form>
+</div>
 {% endblock body %}
+

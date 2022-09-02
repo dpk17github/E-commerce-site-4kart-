@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Log in{% endblock title %}
+{% block body %}
+
+<div class="container my-4">
+    <form action="/handlelogin" method="post">   
+        {% csrf_token %} 
+    <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-12 mb-4 row g-3">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <p class="text-danger"><h5>Log in 4kart Account here!</h5></p> 
+        </div>
+        
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+                <label>Username<span class="text-danger ml-1">*</span></label><br>
+                <span class="wpcf7-form-control-wrap" data-name="username"><input type="text" name="username" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required form-control" aria-required="true" aria-invalid="false" placeholder="Username"></span>
+             </div>
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+                <label>Password<span class="text-danger ml-1">*</span></label><br>
+                <span class="wpcf7-form-control-wrap" data-name="Firstname1"><input type="password" name="password" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required form-control" aria-required="true" aria-invalid="false" placeholder="Password"></span>
+            </div>
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 m-t-20 text-right">
+            <input type="submit" value="Log in now!" class="wpcf7-form-control has-spinner wpcf7-submit btn btn-outline clr"><span class="wpcf7-spinner"></span>
+            </div>
+        </div>  
+    </form>     
+</div>
+
+{% endblock body %}

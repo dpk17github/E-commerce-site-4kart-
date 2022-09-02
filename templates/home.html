@@ -2,6 +2,7 @@
 {% load static %}
 {% block title %}4kart.in{% endblock %}
 {% block home %}active{% endblock home %}
+{% block count %}{{u.cart_count}}{% endblock count %}
 {% block body %}
 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
   <div class="carousel-indicators">
@@ -31,7 +32,7 @@
 </div>
 
 <div class="container-fluid ps-5 my-3">
-<h3>Electronic Gadgets</h3>
+<h3 class="text-secondary">Electronic Gadgets</h3>
   <div class="row">
   {% for p in ep %}
   <div class="container-fluid m-1" style="width: 18rem;">
@@ -47,7 +48,7 @@
 </div>
 
 <div class="container-fluid ps-5 my-3">
-  <h3>Fashion</h3>
+  <h3 class="text-secondary">Fashion</h3>
     <div class="row">
     {% for p in fp %}
     <div class="container-fluid m-1" style="width: 18rem;">
@@ -63,7 +64,7 @@
 </div>
 
 <div class="container-fluid ps-5 my-3">
-  <h3>Shoes</h3>
+  <h3 class="text-secondary">Shoes</h3>
     <div class="row">
     {% for p in sp %}
     <div class="container-fluid m-1" style="width: 18rem;">
@@ -78,3 +79,4 @@
   </div>
 </div>
 {% endblock body %}
+

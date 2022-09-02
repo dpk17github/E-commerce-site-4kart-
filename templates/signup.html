@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Sign up{% endblock title %}
+{% block body %}
+
+<div class="container my-4">
+    <form action="/signup" method="post">
+        {% csrf_token %}
+    <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-12 mb-4 row g-3">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <p class="text-danger"><h5>Create 4kart Account here!</h5></p> 
+        </div>
+        <div class="col-6">
+        <div class="form-group">
+                       <label>First Name<span class="text-danger ml-1">*</span></label><br>
+                       <span class="wpcf7-form-control-wrap" data-name="Firstname"><input type="text" name="firstname" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required form-control" aria-required="true" aria-invalid="false" placeholder="First Name" required></span>
+                    </div>
+        </div>
+        <div class="col-6">
+        <div class="form-group">
+                       <label>Last Name<span class="text-danger ml-1">*</span></label><br>
+                       <span class="wpcf7-form-control-wrap" data-name="Lastname"><input type="text" name="lastname" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required form-control" aria-required="true" aria-invalid="false" placeholder="Last Name" required></span>
+                    </div>
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+                <label>Username<span class="text-danger ml-1">*</span></label><br>
+                <span class="wpcf7-form-control-wrap" data-name="username"><input type="text" name="username" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required form-control" aria-required="true" aria-invalid="false" placeholder="Username" required></span>
+             </div>
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+        <div class="form-group">
+                       <label for="email">Email<span class="text-danger ml-1">*</span></label><br>
+                       <span class="wpcf7-form-control-wrap" data-name="Email"><input type="email" name="email" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email form-control" aria-required="true" aria-invalid="false" placeholder="Email" required></span>
+                    </div>
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+                <label>Phone Number<span class="text-danger ml-1">*</span></label><br>
+                <span class="wpcf7-form-control-wrap" data-name="phone"><input type="number" name="phone" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required form-control" aria-required="true" aria-invalid="false" placeholder="Phone Number" required></span>
+             </div>
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+                <label>Set password<span class="text-danger ml-1">*</span></label><br>
+                <span class="wpcf7-form-control-wrap" data-name="Firstname1"><input type="password" name="password1" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required form-control" aria-required="true" aria-invalid="false" placeholder="Password" required></span>
+            </div>
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+                <label>Confirm Password<span class="text-danger ml-1">*</span></label><br>
+                <span class="wpcf7-form-control-wrap" data-name="password2"><input type="password" name="password2" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required form-control" aria-required="true" aria-invalid="false" placeholder="Password" required></span>
+            </div>
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 m-t-20 text-right">
+            <input type="submit" value="Create Account" class="wpcf7-form-control has-spinner wpcf7-submit btn btn-outline clr"><span class="wpcf7-spinner"></span>
+            </div>
+        </div>  
+    </form>     
+</div>
+
+{% endblock body %}
