@@ -40,7 +40,7 @@ def add_to_cart(request, int):
 
     add_in_cart = cartItems.objects.create(cart = create_cart, product = userproduct)
     add_in_cart.save()
-    messages.success(request,f'{userproduct} add successfully in your cart')
+    messages.success(request,f'{userproduct} added successfully in your cart')
     return redirect('/shop')
 
 
