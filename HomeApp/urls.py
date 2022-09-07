@@ -13,6 +13,7 @@ urlpatterns = [
     path('viewcart',views.viewcart,name='viewcart'),
     path('remove_cart/<int>',views.remove_cart,name='remove_cart'),
     path('checkbuy',views.checkbuy,name='checkbuy'),
+    path('checkbuy2/<int>',views.checkbuy2,name='checkbuy2'),
     path('myorder',views.myorder,name='myorder'),
     path('handlepayment',views.handlepayment,name='handlepayment'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

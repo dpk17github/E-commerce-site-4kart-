@@ -31,6 +31,7 @@ class order(models.Model):
     address = models.CharField(max_length=100)
     zip = models.IntegerField(default=0)
     payment_method = models.CharField(max_length=100)
+    payment_Status = models.CharField(max_length=200,blank=True)
 
     def __str__(self):
-        return f"{self.product[0:20]}.. by {self.user} via {self.payment_method}"
+        return f"order by {self.first_name}({self.user}) is [{self.product[1:20]}..etc] VIA {self.payment_method}"

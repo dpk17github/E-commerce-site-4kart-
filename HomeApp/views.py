@@ -31,32 +31,29 @@ def home(request):
 def search(request):
     if request.method == 'POST':
         search = request.POST.get('search')
+        if search == '':
+            search = 'empty value'
         filter = request.POST.get('filter')
-        print(filter)
         if filter == 'nf':
             fs= product.objects.filter( Q(category__icontains='fashion') , Q(search_key__icontains = search))
             context ={'allpro':fs}
             total = fs.count()
             messages.warning(request,f'We have {total} Search Result for {search}')
-            return render(request,'search.html',context)
         if filter == 'mf':
             fs= product.objects.filter( Q(category__icontains='fashion'), Q(search_key__icontains = search), Q(for_gender='M'))
             context ={'allpro':fs}
             total = fs.count()
             messages.warning(request,f'We have {total} Search Result for {search}')
-            return render(request,'search.html',context)
         if filter == 'wf':
             fs= product.objects.filter( Q(category__icontains='fashion'), Q(search_key__icontains = search), Q(for_gender='F'))
             context ={'allpro':fs}
             total = fs.count()
             messages.warning(request,f'We have {total} Search Result for {search}')
-            return render(request,'search.html',context)
         if filter == 'gadgets':
             fs= product.objects.filter( Q(category__icontains='electronic gadgets'), Q(search_key__icontains = search))
             context ={'allpro':fs}
             total = fs.count()
             messages.warning(request,f'We have {total} Search Result for {search}')
-            return render(request,'search.html',context)
         if filter == 'all':
             bycat = product.objects.filter(category__icontains= search)
             byname = product.objects.filter(search_key__icontains = search)
@@ -203,9 +200,21 @@ def checkbuy(request):
     userdata = userAddress.objects.filter(user=request.user).first()
     cart = ''
     for cartitem in allcart:
-        cart = cart + '* ' + cartitem.product.product_name + '\n'
+        cart = cart + '*' + str(cartitem.product.product_name) + '\n'
     context={'allcart':allcart,'totalprice':totalprice,'u':userdata, 'cart':cart}
     return render(request,'buynow.html',context)
+
+def checkbuy2(request,int):
+    allcart = product.objects.filter(product_id = int)
+    totalprice = 0
+    for item in allcart:
+        totalprice =totalprice + item.price
+    userdata = userAddress.objects.filter(user=request.user).first()
+    perticular = allcart.first()
+    cart = perticular.product_name
+    context={'allcart':allcart,'totalprice':totalprice,'u':userdata, 'cart':cart}
+    return render(request,'buynow2.html',context)
+
 
 def myorder(request):
     if request.method == 'POST':
@@ -226,10 +235,9 @@ def myorder(request):
         buyer = User.objects.get(id=username)
         if check == 'on':
             if radio == 'payTM':
-                myorder = order(user=buyer,product=pro,first_name=first_name,last_name=last_name,email=email,phone=phone,
+                myorder = order(user=request.user,product=pro,first_name=first_name,last_name=last_name,email=email,phone=phone,
                 state=state,city=city,address=address,zip=zip,amount=amount,payment_method=radio)
                 myorder.save()
-                print(str(myorder.id),myorder.first_name)
                 param_dict={
                             'MID':'FDxrCj49984261690146',
                             'ORDER_ID': str(myorder.id),
@@ -243,33 +251,56 @@ def myorder(request):
                 param_dict['CHECKSUMHASH'] = checksum.generate_checksum(param_dict, MARCHANT_KEY)
                 return  render(request, 'paytm.html', {'param_dict': param_dict})
 
-                # return HttpResponse(f'hogya bhai {radio} se')
             elif radio == 'Dcard':
                 myorder = order(user=buyer,product=pro,first_name=first_name,last_name=last_name,email=email,phone=phone,
                 state=state,city=city,address=address,zip=zip,amount=amount,payment_method=radio)
-                myorder.save()
-                return HttpResponse(f'hogya bhai {radio} se')
+                # myorder.save()
+                return HttpResponse(f'this service is temprary off please try another payment method<br> <h3><a href="/checkbuy">try another way!</a></h3>')
             elif radio == 'Ccard':
                 myorder = order(user=buyer,product=pro,first_name=first_name,last_name=last_name,email=email,phone=phone,
                 state=state,city=city,address=address,zip=zip,amount=amount,payment_method=radio)
-                myorder.save()
-                return HttpResponse(f'hogya bhai {radio} se')
+                # myorder.save()
+                return HttpResponse(f'this service is temprary off please try another payment method<br> <h3><a href="/checkbuy">try another way!</a></h3>')
             elif radio == 'cod':
                 myorder = order(user=buyer,product=pro,first_name=first_name,last_name=last_name,email=email,phone=phone,
-                state=state,city=city,address=address,zip=zip,amount=amount,payment_method=radio)
+                state=state,city=city,address=address,zip=zip,amount=amount,payment_method=radio,payment_Status="cash on delivery")
                 myorder.save()
-                return HttpResponse(f'hogya bhai {radio} se')
+                u = order.objects.filter(id=myorder.id).first()
+                y = u.product
+                if y[0:1]=='*':
+                    allcart = cartItems.objects.filter(cart=request.user.id)
+                    allcart.delete()
+                return render(request,'cod.html',{'u':myorder})
             else:
-                pass
+                messages.error(request,'Somthing wronge try again!!')
+                return redirect('/checkbuy')
         else:
-            pass
-    return render(request, 'shop/checkout.html')
-
-            # messages.warning(request,'Please confirm your address')
-            # return redirect('/checkbuy')
-    # return HttpResponse('done')
+            messages.warning(request,'Please confirm your address')
+            return redirect('/checkbuy')
+    return HttpResponse('error 404 page not found')
 
 
 @csrf_exempt
 def handlepayment(request):
-    return HttpResponse('hogta done')
+    form = request.POST
+    response_dict = {}
+    for i in form.keys():
+        response_dict[i] = form[i]
+        if i == 'CHECKSUMHASH':
+            is_checksum = form[i]
+        
+    verify = checksum.verify_checksum(response_dict, MARCHANT_KEY, is_checksum)
+    if verify:
+        u = order.objects.filter(id=response_dict['ORDERID']).first()
+        y = u.product
+        if response_dict['RESPCODE'] == '01':
+            u.payment_Status = f'Payment ({u.amount}) Done by PayTm'
+            u.save()
+            if y[0:1]=='*':
+                allcart = cartItems.objects.filter(cart=u.user.id)
+                allcart.delete()
+        else:
+            u.payment_Status = f'Payment ({u.amount}) Failed by PayTm'
+            u.save()
+        return render(request,"paymentstatus.html",{'response':response_dict,'u':u})
+        

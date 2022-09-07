@@ -10,6 +10,17 @@
       </svg>
       Search Resultes
     </h3> 
+    {% if allpro|length < 1 %}
+    <div class="container">
+    Your search -<b>{{search}}</b>- did not match any documents.<br>
+    <br>
+    <b>Suggestions:</b><br>
+    
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Make sure that all words are spelled correctly.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Try different keywords.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. Try more general keywords.<br>
+    </div>
+    {% else %}
     <div class="row">
       {% for product in allpro %}
       <div class="container-fluid m-1" style="width: 18rem;">
@@ -18,14 +29,12 @@
           <h5 class="card-title">{{product.product_name}} <span class="text-danger">{{product.price_off}}% Off</span></h5>
           <p class="card-text">{{product.des|truncatechars:25}}</p>
           <a href="shop/{{product.product_id}}" class="btn btn-sm btn-warning">Buy Now !</a>
-          <a href="{{product.product_id}}" class="btn btn-sm btn-outline-warning">Add to Cart !</a>
+          <a href="/shop/add-to-cart/{{product.product_id}}" class="btn btn-sm btn-outline-warning">Add to Cart !</a>
         </div>
       </div>
-      {% if forloopcount == 4 %}
-        hlo
-      {% endif %}
       {% endfor %}
     </div>
-</div>
-    
-{% endblock body %}
+    {% endif %}
+  </div>
+  
+  {% endblock body %}

@@ -9,13 +9,17 @@
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-heart-fill" viewBox="0 0 16 16">
       <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5ZM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1Zm0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"/>
     </svg> Buy Now:</h4>
+    {% block cart %}
     <div class="card my-3 text-secondary">
         <h5 class="cart mx-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-check-fill" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zm-.646 5.354a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
           </svg> my Cart</h5>
         <div class="card-body">
-            <table class="table">
-                <thead>
+          {% if allcart|length < 1 %}
+          <h5 class="text-danger">Cart is empty !!</h5>
+          {% else %}
+          <table class="table">
+            <thead>
                   <tr class="text-danger">
                       <th scope="col">Product Name</th>
                       <th scope="col">Total item</th>
@@ -33,52 +37,54 @@
                                 <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
                             </svg> {{cart.product.product_name}} @ {{cart.product.price}}</b><br>
                             {% endfor %}
-                        </td>
+                          </td>
                         <th scope="row"><b class="text-light">{{allcart.count}}</b></th>
                         <td>
                             <b class="text-light"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-currency-rupee" viewBox="0 0 16 16">
                                 <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4v1.06Z"/>
                                 </svg> {{totalprice}}
                             </b>
-                        </td>
-                        <td></td>
-                    </tr>
-                </tbody>
-              </table>
-        </div>
-        </div>
-    <h5 class="text-danger">Step: 1.  Check Address and others details:</h5>
-    <form action="/myorder" method="post">
-        {% csrf_token %}
-        <div class="row my-4">
+                          </td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    {% endif %}
+                  </div>
+                </div>
+        {% endblock cart %}
+        <h5 class="text-danger">Step: 1.  Check Address and others details:</h5>
+        <form action="/myorder" method="post">
+          {% csrf_token %}
+          <div class="row my-4">
             <div class="col-sm-6">
                 <div class="mb-3 pb-1">
                     <label class="form-label px-0" for="account-fn">First Name</label>
-                    <input class="form-control" type="text" id="account-fn" value="{{user.first_name}}" name="firstname" placeholder="Enter firstname">
+                    <input class="form-control" type="text" id="account-fn" value="{{user.first_name}}" name="firstname" placeholder="Enter firstname" required>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="mb-3 pb-1">
                     <label class="form-label px-0" for="account-ln">Last Name</label>
-                    <input class="form-control" type="text" id="account-ln" value="{{user.last_name}}" name="lastname" placeholder="Enter lastname">
+                    <input class="form-control" type="text" id="account-ln" value="{{user.last_name}}" name="lastname" placeholder="Enter lastname" required>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="mb-3 pb-1">
                     <label class="form-label px-0" for="account-email">Email address</label>
-                    <input class="form-control" type="text" id="account-email" value="{{user.email}}" name="email" placeholder="Enter email">
+                    <input class="form-control" type="text" id="account-email" value="{{user.email}}" name="email" placeholder="Enter email" required>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="mb-3 pb-1">
                     <label class="form-label px-0" for="account-username">Phone Number</label>
-                    <input class="form-control" type="number" id="account-username" value="{{u.phone}}" name="phone" placeholder="Enter phone number">
+                    <input class="form-control" type="number" id="account-username" value="{{u.phone}}" name="phone" placeholder="Enter phone number" required>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="mb-3 pb-1">
                     <label class="form-label px-0" for="account-country">State</label>
-                    <select class="form-select" name="state">
+                    <select class="form-select" name="state" required>
                         <option value="{{u.state}}" selected="">{{u.state}}</option>
                         <option value="">Select country</option>
                         <option value="Haryana">Haryana</option>
@@ -96,19 +102,19 @@
             <div class="col-sm-6">
                 <div class="mb-3 pb-1">
                     <label class="form-label px-0" for="account-city">City</label>
-                    <input class="form-control" type="text" id="account-city" value="{{u.city}}" name="city" placeholder="Enter city">
+                    <input class="form-control" type="text" id="account-city" value="{{u.city}}" name="city" placeholder="Enter city" required>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="mb-3 pb-1">
                     <label class="form-label px-0" for="account-address">Address Line</label>
-                    <input class="form-control" type="text" id="account-address" value="{{u.address}}" name="address" placeholder="Enter address">
+                    <input class="form-control" type="text" id="account-address" value="{{u.address}}" name="address" placeholder="Enter address" required>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="mb-3 pb-1">
                     <label class="form-label px-0" for="account-zip">ZIP Code</label>
-                    <input class="form-control" type="text" id="account-zip" value="{{u.zip}}" name="zip" placeholder="Enter zip code">
+                    <input class="form-control" type="text" id="account-zip" value="{{u.zip}}" name="zip" placeholder="Enter zip code" required>
                 </div>
             </div>
             <div class="col-12">
@@ -134,9 +140,7 @@
         <div class="form-check">
             <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="payTM" checked>
             <label class="form-check-label" for="exampleRadios1">
-              PayTM <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-paypal" viewBox="0 0 16 16">
-                <path d="M14.06 3.713c.12-1.071-.093-1.832-.702-2.526C12.628.356 11.312 0 9.626 0H4.734a.7.7 0 0 0-.691.59L2.005 13.509a.42.42 0 0 0 .415.486h2.756l-.202 1.28a.628.628 0 0 0 .62.726H8.14c.429 0 .793-.31.862-.731l.025-.13.48-3.043.03-.164.001-.007a.351.351 0 0 1 .348-.297h.38c1.266 0 2.425-.256 3.345-.91.379-.27.712-.603.993-1.005a4.942 4.942 0 0 0 .88-2.195c.242-1.246.13-2.356-.57-3.154a2.687 2.687 0 0 0-.76-.59l-.094-.061ZM6.543 8.82a.695.695 0 0 1 .321-.079H8.3c2.82 0 5.027-1.144 5.672-4.456l.003-.016c.217.124.4.27.548.438.546.623.679 1.535.45 2.71-.272 1.397-.866 2.307-1.663 2.874-.802.57-1.842.815-3.043.815h-.38a.873.873 0 0 0-.863.734l-.03.164-.48 3.043-.024.13-.001.004a.352.352 0 0 1-.348.296H5.595a.106.106 0 0 1-.105-.123l.208-1.32.845-5.214Z"/>
-              </svg>
+              <img src="{% static "img/Paytm_logo.png" %}" class="d-block" height="20px" alt="...">
             </label>
           </div>
           <div class="form-check">
@@ -167,7 +171,11 @@
           <input type="hidden" name="amount" value="{{totalprice}}">
           <input type="hidden" name="allproduct" value="{{cart}}">
           {% comment %} '''' {% endcomment %}
+          {% if allcart|length < 1 %}
+          <button type="sumbit" class="btn btn-outline-success my-2" disabled>Pay Securely </button>
+          {% else %}
           <button type="sumbit" class="btn btn-outline-success my-2">Pay Securely </button>
+          {% endif %}
     </form>
 </div>
 {% endblock body %}
