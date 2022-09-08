@@ -111,6 +111,9 @@ def signup(request):
         myuser.last_name = last_name
         myuser.city = last_name
         myuser.save()
+
+        useraddress =userAddress(id=myuser.id,user_id=myuser.id,state='',city='',address='',phone=phone,zip='000000')
+        useraddress.save()
         messages.success(request,"Your 4kart Account has been create Successfully")
         return redirect('/signup')
     return render(request,'signup.html')
@@ -152,6 +155,12 @@ def profile(request):
         zip = request.POST.get('zip')
         userid = request.POST.get('userid')
         check = request.POST.get('check','off')
+        if len(phone) < 10 :
+            messages.error(request,'please enter correct phone number')
+            return redirect('/profile')
+        if len(zip) != 6 :
+            messages.error(request,'please enter correct(6) zip code')
+            return redirect('/profile')
         if check == 'on':
             myuser = User.objects.get(id=userid)
             myuser.first_name = first_name
@@ -172,7 +181,8 @@ def profile(request):
     return render(request,'profile.html',context)
     
 def viewcart(request):
-    allcart = cartItems.objects.filter(cart=request.user.id)
+    allcart1 = cart.objects.filter(user=request.user).first()
+    allcart = cartItems.objects.filter(cart=allcart1)
     totalprice = 0
     for item in allcart:
         totalprice =totalprice + item.product.price
@@ -193,15 +203,16 @@ def remove_cart(request, int):
     return redirect('/viewcart')
 
 def checkbuy(request):
-    allcart = cartItems.objects.filter(cart=request.user.id)
+    allcart1 = cart.objects.filter(user=request.user).first()
+    allcart = cartItems.objects.filter(cart=allcart1)
     totalprice = 0
     for item in allcart:
         totalprice =totalprice + item.product.price
     userdata = userAddress.objects.filter(user=request.user).first()
-    cart = ''
+    itemcart = ''
     for cartitem in allcart:
-        cart = cart + '*' + str(cartitem.product.product_name) + '\n'
-    context={'allcart':allcart,'totalprice':totalprice,'u':userdata, 'cart':cart}
+        itemcart = itemcart + '*' + str(cartitem.product.product_name) + '\n'
+    context={'allcart':allcart,'totalprice':totalprice,'u':userdata, 'cart':itemcart}
     return render(request,'buynow.html',context)
 
 def checkbuy2(request,int):
@@ -211,8 +222,8 @@ def checkbuy2(request,int):
         totalprice =totalprice + item.price
     userdata = userAddress.objects.filter(user=request.user).first()
     perticular = allcart.first()
-    cart = perticular.product_name
-    context={'allcart':allcart,'totalprice':totalprice,'u':userdata, 'cart':cart}
+    itemcart = perticular.product_name
+    context={'allcart':allcart,'totalprice':totalprice,'u':userdata, 'cart':itemcart}
     return render(request,'buynow2.html',context)
 
 
@@ -268,7 +279,8 @@ def myorder(request):
                 u = order.objects.filter(id=myorder.id).first()
                 y = u.product
                 if y[0:1]=='*':
-                    allcart = cartItems.objects.filter(cart=request.user.id)
+                    allcart1 = cart.objects.filter(user=request.user).first()
+                    allcart = cartItems.objects.filter(cart=allcart1)
                     allcart.delete()
                 return render(request,'cod.html',{'u':myorder})
             else:
@@ -297,7 +309,8 @@ def handlepayment(request):
             u.payment_Status = f'Payment ({u.amount}) Done by PayTm'
             u.save()
             if y[0:1]=='*':
-                allcart = cartItems.objects.filter(cart=u.user.id)
+                allcart1 = cart.objects.filter(user=u.user).first()
+                allcart = cartItems.objects.filter(cart=allcart1)
                 allcart.delete()
         else:
             u.payment_Status = f'Payment ({u.amount}) Failed by PayTm'
