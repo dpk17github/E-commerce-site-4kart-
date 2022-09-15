@@ -106,6 +106,9 @@ def signup(request):
         if password1 != password2:
             messages.error(request,'Sorry! Sign up fail.. Password do not match')
             return redirect('/signup')
+        if User.objects.filter(username=username).exists():
+            messages.error(request,'Sorry! Sign up fail.. Username already register try different username')
+            return redirect('/signup')
         myuser = User.objects.create_user(username, email, password1)
         myuser.first_name = first_name
         myuser.last_name = last_name
@@ -244,6 +247,21 @@ def myorder(request):
         check = request.POST.get('check','off')
         radio = request.POST.get('exampleRadios','off')
         buyer = User.objects.get(id=username)
+        if len(zip) != 6:
+            messages.error(request,'Please enter valid zip code')
+            return redirect('/checkbuy')
+        if len(phone) < 10:
+            messages.error(request,'Please enter valid phone number')
+            return redirect('/checkbuy')
+        if len(state) < 2:
+            messages.error(request,"state can't be empty Please enter state")
+            return redirect('/checkbuy')
+        if len(city) < 3:
+            messages.error(request,"Please enter valid city")
+            return redirect('/checkbuy')
+        if len(address) < 5:
+            messages.error(request,"Please enter valid Address")
+            return redirect('/checkbuy')
         if check == 'on':
             if radio == 'payTM':
                 myorder = order(user=request.user,product=pro,first_name=first_name,last_name=last_name,email=email,phone=phone,
@@ -287,7 +305,7 @@ def myorder(request):
                 messages.error(request,'Somthing wronge try again!!')
                 return redirect('/checkbuy')
         else:
-            messages.warning(request,'Please confirm your address')
+            messages.warning(request,'Please confirm your address before order')
             return redirect('/checkbuy')
     return HttpResponse('error 404 page not found')
 
